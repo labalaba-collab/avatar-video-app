@@ -55,7 +55,7 @@ export class CanvasFallbackEngine implements TransformationEngine {
     }
   }
 
-  private drawAvatar(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, skinColor: string) {
+  drawAvatar(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, skinColor: string) {
     ctx.fillStyle = skinColor;
     ctx.beginPath();
     ctx.arc(x, y, size * 0.6, 0, Math.PI * 2);
@@ -107,7 +107,8 @@ export async function createTransformationEngine(name?: EngineName): Promise<Tra
             const cx = canvas.width / 2;
             const cy = canvas.height * 0.45;
             const size = Math.min(canvas.width, canvas.height) * 0.28;
-            new CanvasFallbackEngine().drawAvatar?.(ctx, cx, cy, size, '#d4a574');
+            const fallback = new CanvasFallbackEngine();
+            fallback.drawAvatar(ctx, cx, cy, size, '#d4a574');
           }
         },
       };
@@ -129,10 +130,8 @@ export async function createTransformationEngine(name?: EngineName): Promise<Tra
           ctx.font = 'bold 16px sans-serif';
           ctx.fillText('TENSORFLOW • LANDMARKS', 20, 40);
           if (mode === 'avatar') {
-            const cx = canvas.width / 2;
-            const cy = canvas.height * 0.45;
-            const size = Math.min(canvas.width, canvas.height) * 0.28;
-            new CanvasFallbackEngine().processFrame(ctx, canvas, 'avatar');
+            const fallback = new CanvasFallbackEngine();
+            fallback.processFrame(ctx, canvas, 'avatar');
           }
         },
       };
@@ -154,7 +153,8 @@ export async function createTransformationEngine(name?: EngineName): Promise<Tra
           ctx.font = 'bold 16px sans-serif';
           ctx.fillText('ML5 • POSE DETECTION', 20, 40);
           if (mode === 'avatar') {
-            new CanvasFallbackEngine().processFrame(ctx, canvas, 'avatar');
+            const fallback = new CanvasFallbackEngine();
+            fallback.processFrame(ctx, canvas, 'avatar');
           }
         },
       };
