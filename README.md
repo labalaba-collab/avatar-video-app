@@ -1,39 +1,32 @@
-# Vanta — real-time social video platform
+# LiveKit + real-time media stack
 
-This project is a production-friendly foundation for a premium real-time social video application with live calls, avatar switching, profile/social infrastructure, secure consent, and real-time signaling.
+This project now includes a real-time media stack foundation built around LiveKit, which is the correct production path for live video sessions and transformation workflows.
 
-## Stack
+## Required services
 
-- Next.js 14 App Router
-- TypeScript
-- Tailwind CSS
-- Prisma + PostgreSQL
-- Socket.IO + WebRTC signaling scaffold
-- Production-ready route structure and auth/session cookies
+- PostgreSQL for the app data model
+- LiveKit server for WebRTC media relay
+- TURN/STUN credentials for production NAT traversal
+- Optional OBS Studio or NDI for streaming/recording workflows
 
-## Scripts
+## Start locally
 
 ```bash
 npm install
 cp .env.example .env.local
-npx prisma generate
-npx prisma db push
+# Start a LiveKit server locally or point to a hosted instance
 npm run dev
 ```
 
-## Features included
+## Endpoints
 
-- Landing page and dashboard
-- Real-time calling UI and signaling service
-- Avatar studio and profile UI
-- Social account integration endpoints
-- Auth, session, and route protection foundation
-- Admin-style security, privacy, and call history structure
+- `/api/livekit/token` generates a short-lived room token
+- `/livekit-demo` connects to a live room using the token
 
-## Deployment notes
+## Production guidance
 
-- Use a managed Postgres instance for `DATABASE_URL`
-- Configure actual OAuth providers in `.env.local`
-- Use HTTPS in production and secure session cookies
-- Replace the mock-store with production database-backed APIs when ready
-- Add WebRTC media processing for real-time transformation pipeline
+- Use a managed LiveKit deployment or self-host a secure LiveKit server
+- Set `LIVEKIT_API_KEY` and `LIVEKIT_API_SECRET`
+- Use external TURN credentials for public internet connectivity
+- For real face transformations, capture `canvas.captureStream()` and send the transformed stream through the media connection
+- Keep the transformation pipeline pluggable and identity-safe
